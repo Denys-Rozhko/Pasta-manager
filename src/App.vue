@@ -1,26 +1,26 @@
 <template>
-<div>
-  <div id="app">
-    <nav class="orange darken-2">
-      <div class="nav-wrapper">
-        <a href="#!" class="brand-logo center">Pasta manager</a>
+  <div>
+    <div id="app">
+      <nav class="orange darken-2">
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo center">Pasta manager</a>
+        </div>
+      </nav>
+    </div>
+    <main class="container">
+      <div v-if="categories.length == 0">
+        <h4 class="center">Увы, у Вас пока что нет еще нет паст</h4>
       </div>
-    </nav>
+      <ul class="collapsible popout">
+        <CollapsibleCategory
+          v-for="category of categories"
+          :key="category.categoryId"
+          :categoryProp="category"
+          @deleteCategory="deleteCategoryById"
+        />
+      </ul>
+    </main>
   </div>
-  <main class="container">
-  <div v-if="categories.length == 0">
-    <h4 class="center">Увы, у Вас пока что нет еще нет паст</h4>
-  </div>
-  <ul class="collapsible popout">
-    <CollapsibleCategory 
-      v-for="category of categories"
-      :key="category.categoryId"
-      :categoryProp="category"
-      @deleteCategory="deleteCategoryById"
-    />
-  </ul>
-  </main>
-</div>
 </template>
 
 <script>
@@ -34,7 +34,9 @@ export default {
   name: "App",
   methods: {
     deleteCategoryById(categoryId) {
-      this.categories = this.categories.filter(category => category.categoryId !== categoryId);
+      this.categories = this.categories.filter(
+        category => category.categoryId !== categoryId
+      );
     }
   },
   mounted() {
@@ -58,7 +60,7 @@ export default {
             id: 3,
             pastaTitle: "Pasta 1.3",
             pastaText: "Pasta text 1.3"
-          },
+          }
         ]
       },
       {
@@ -79,7 +81,7 @@ export default {
             id: 3,
             pastaTitle: "Pasta 2.3",
             pastaText: "Pasta text 2.3"
-          },
+          }
         ]
       },
       {
@@ -100,18 +102,20 @@ export default {
             id: 3,
             pastaTitle: "Pasta 3.3",
             pastaText: "Pasta text 3.3"
-          },
+          }
         ]
-      },
+      }
     ];
     setTimeout(() => {
-      const elems = document.querySelectorAll('.collapsible');
+      const elems = document.querySelectorAll(".collapsible");
       this.collapsibles = window.M.Collapsible.init(elems, {});
 
-      const elemsExp = document.querySelectorAll('.collapsible.expandable');
-      this.collapsibles.push(...window.M.Collapsible.init(elemsExp, {
-        accordion: false
-      }));
+      const elemsExp = document.querySelectorAll(".collapsible.expandable");
+      this.collapsibles.push(
+        ...window.M.Collapsible.init(elemsExp, {
+          accordion: false
+        })
+      );
     }, 0);
   },
   destroyed() {
