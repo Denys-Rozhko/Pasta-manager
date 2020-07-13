@@ -2,8 +2,8 @@
   <li>
     <div class="collapsible-header" @click="isCollapsibleOpen = !isCollapsibleOpen">
       <span v-if="!isEditing">{{title}}</span>
-      <div v-else @click.stop>
-          <input id="title" class="validate" v-model="title">
+      <div v-else @click.stop class="input-field inline">
+          <input id="title" v-model="title" type="text">
           <label for="title">Новое название</label>
       </div>
     <span class="badge right">
@@ -33,8 +33,10 @@
     </div>
     <div class="collapsible-body" v-if="!isEditing">{{text}}</div>
     <div class="collapsible-body" v-else>
-      <textarea class="materialize-textarea" v-model="text"></textarea>
-      <label for="textarea1">Новый текст</label>
+      <div class="input-field">
+        <textarea class="materialize-textarea" v-model="text"></textarea>
+        <label for="textarea1">Новый текст</label>
+      </div>
     </div>
     
   </li>
@@ -43,7 +45,10 @@
 <script>
 export default {
   props: {
-    pasta: Object
+    pasta: {
+      type: Object,
+      required: true
+    }
   },
   data(){
     return {
@@ -72,6 +77,9 @@ export default {
       this.textBeforeEditing  = this.text;
       this.titleBeforeEditing = this.title;
 
+      setTimeout(() => {
+        window.M.updateTextFields();
+      },0);
       // isOk = send to the server
       // if !isOk 
       //   this.text = textBeforeEditing

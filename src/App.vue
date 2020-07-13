@@ -19,9 +19,6 @@
       @deleteCategory="deleteCategoryById"
     />
   </ul>
-  
-
-
   </main>
 </div>
 </template>
