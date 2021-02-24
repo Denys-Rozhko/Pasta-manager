@@ -19,11 +19,10 @@
     </div>
     <div class="collapsible-body">
       <ul class="collapsible expandable">
-        <CollapsiblePasta
-          v-for="pasta of category.pastas"
-          :pasta="pasta"
-          :key="pasta.id"
-          @deletePasta="deletePastaById"
+        <CollapsibleCopyPasta
+          v-for="copypasta of category.copypastas"
+          :copypasta="copypasta"
+          :key="copypasta.copypastaId"
         />
       </ul>
     </div>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import CollapsiblePasta from "@/components/CollapsiblePasta";
+import CollapsibleCopyPasta from "@/components/CollapsibleCopyPasta";
 
 export default {
   props: {
@@ -56,25 +55,33 @@ export default {
         window.M.updateTextFields();
       }, 0);
     },
-    editEnd() {
+    async editEnd() {
       if (this.category.title != this.titleBeforeEditing) {
-        // send to the server
-        window.M.toast({ html: "Название успешно изменено" });
+        try {
+          this.isEditing = !this.isEditing;
+          await this.$store.dispatch("updateCategory", {
+            categoryId: this.category.categoryId,
+            categoryTitle: this.category.title
+          })
+          window.M.toast({ html: "Название успешно изменено" });
+        } catch (e) {
+          window.M.toast({ html: "Не удалось связаться с сервером" });
+        }
+      } else {
+        this.isEditing = !this.isEditing;
       }
-
-      this.isEditing = !this.isEditing;
     },
-    deletePastaById(id) {
-      this.category.pastas = this.category.pastas.filter(
-        pasta => pasta.id !== id
-      );
-    },
-    del() {
-      this.$emit("deleteCategory", this.category.categoryId);
+    async del() {
+      try {
+        await this.$store.dispatch("deleteCategory", this.category.categoryId);
+        window.M.toast({ html: "Категория успешно удалена" });
+      } catch (e) {
+        window.M.toast({ html: "Не удалось связаться с сервером" });
+      }
     }
   },
   components: {
-    CollapsiblePasta
+    CollapsibleCopyPasta
   }
 };
 </script>

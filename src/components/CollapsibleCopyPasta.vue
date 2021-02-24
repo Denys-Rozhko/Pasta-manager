@@ -34,16 +34,16 @@
 <script>
 export default {
   props: {
-    pasta: {
+    copypasta: {
       type: Object,
       required: true
     }
   },
   data() {
     return {
-      id: this.pasta.id,
-      text: this.pasta.pastaText,
-      title: this.pasta.pastaTitle,
+      copypastaId: this.copypasta.copypastaId,
+      text: this.copypasta.copypastaText,
+      title: this.copypasta.copypastaTitle,
       textBeforeEditing: this.text,
       titleBeforeEditing: this.title,
       isEditing: false,
@@ -68,28 +68,34 @@ export default {
       setTimeout(() => {
         window.M.updateTextFields();
       }, 0);
-      // isOk = send to the server
-      // if !isOk
-      //   this.text = textBeforeEditing
     },
-    save() {
-      // isOk = send to the server
-      // if !isOk
-      //   this.text = this.textBeforeEditing
-      //   this.title = this.titleBeforeEditing
-      // Toast({html: "Не удалось сохранить изменения"})
-      // else
-      this.isEditing = false;
+    async save() {
       if (
         this.text != this.textBeforeEditing ||
         this.title != this.titleBeforeEditing
       ) {
-        window.M.toast({ html: "Изменения успешно сохранены" });
+        try {
+          await this.$store.dispatch("updateCopyPasta", {
+            copypastaId: this.copypastaId,
+            copypastaTitle: this.title,
+            copypastaText: this.text
+          });
+          this.isEditing = false;
+          window.M.toast({ html: "Изменения успешно сохранены" });
+        } catch (e) {
+          window.M.toast({ html: "Не удалось связаться с сервером" });
+        }
+      } else {
+        this.isEditing = false;
       }
     },
-    del() {
-      // delete on servers
-      this.$emit("deletePasta", this.id);
+    async del() {
+      try {
+        await this.$store.dispatch("deleteCopyPasta", this.copypastaId);
+        window.M.toast({ html: "Копипаса успешно удалена" });
+      } catch (e) {
+        window.M.toast({ html: "Не удалось связаться с сервером" });
+      }
     }
   }
 };
