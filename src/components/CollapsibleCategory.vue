@@ -15,17 +15,34 @@
         <i class="material-icons" v-else @click.stop="editEnd">save</i>
 
         <i @click.stop="modalOpened = true" class="material-icons">delete</i>
+
+        <i @click.stop="addCopyPastaModalOpened = true" class="material-icons"
+          >add</i
+        >
       </span>
     </div>
     <div class="collapsible-body">
       <ul class="collapsible expandable">
-        <CollapsibleCopyPasta
-          v-for="copypasta of category.copypastas"
-          :copypasta="copypasta"
-          :key="copypasta.copypastaId"
-        />
+        <template v-if="category.copypastas && category.copypastas.length > 0">
+          <CollapsibleCopyPasta
+            v-for="copypasta of category.copypastas"
+            :copypasta="copypasta"
+            :key="copypasta.copypastaId"
+          />
+        </template>
+
+        <li v-else class="collapsible-header">
+          Увы, у Вас еще нет копипаст. Вы можете добавить их нажав на '+' справа
+          выше
+        </li>
       </ul>
     </div>
+
+    <AddCopyPastaModal
+      v-if="addCopyPastaModalOpened"
+      @closed="addCopyPastaModalOpened = false"
+      :defaultCategoryId="category.categoryId"
+    />
 
     <Modal v-if="modalOpened">
       <template v-slot:default>
@@ -58,6 +75,7 @@
 
 <script>
 import CollapsibleCopyPasta from "@/components/CollapsibleCopyPasta";
+import AddCopyPastaModal from "@/components/modals/AddCopyPastaModal";
 
 export default {
   props: {
@@ -72,6 +90,7 @@ export default {
       isEditing: false,
       titleBeforeEditing: "",
       modalOpened: false,
+      addCopyPastaModalOpened: false,
     };
   },
   methods: {
@@ -111,6 +130,7 @@ export default {
   },
   components: {
     CollapsibleCopyPasta,
+    AddCopyPastaModal,
   },
 };
 </script>
