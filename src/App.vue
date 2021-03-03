@@ -70,19 +70,26 @@ export default {
       return this.$store.getters.categories;
     },
   },
-  methods: {},
-  mounted() {
-    setTimeout(() => {
-      const elems = document.querySelectorAll(".collapsible");
-      this.collapsibles = window.M.Collapsible.init(elems, {});
+  methods: {
+    updateCollapsibles() {
+      this.$nextTick(() => {
+        const elems = document.querySelectorAll(".collapsible");
+        this.collapsibles = window.M.Collapsible.init(elems, {});
 
-      const elemsExp = document.querySelectorAll(".collapsible.expandable");
-      this.collapsibles.push(
-        ...window.M.Collapsible.init(elemsExp, {
-          accordion: false,
-        })
-      );
-    }, 0);
+        const elemsExp = document.querySelectorAll(".collapsible.expandable");
+        this.collapsibles.push(
+          ...window.M.Collapsible.init(elemsExp, {
+            accordion: false,
+          })
+        );
+      });
+    },
+  },
+  mounted() {
+    this.updateCollapsibles();
+  },
+  updated() {
+    this.updateCollapsibles();
   },
   beforeUnmounted() {
     this.collapsibles.forEach((instance) => instance.destroy());

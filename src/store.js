@@ -105,11 +105,6 @@ const store = createStore({
       { categoryId, copypastaId, copypastaTitle, copypastaText }
     ) {
       for (let category of state.categories) {
-        console.log(
-          `${category.categoryId} == ${categoryId} => ${
-            category.categoryId == categoryId
-          }`
-        );
         if (category.categoryId == categoryId) {
           category.copypastas.push({
             copypastaId,

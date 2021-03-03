@@ -14,7 +14,9 @@
 
         <i class="material-icons" v-else @click.stop="editEnd">save</i>
 
-        <i @click.stop="modalOpened = true" class="material-icons">delete</i>
+        <i @click.stop="confirmingModalOpen = true" class="material-icons"
+          >delete</i
+        >
 
         <i @click.stop="addCopyPastaModalOpened = true" class="material-icons"
           >add</i
@@ -44,21 +46,11 @@
       :defaultCategoryId="category.categoryId"
     />
 
-    <Modal v-if="modalOpened">
-      <template v-slot:default>
-        <h5>
-          Вы уверены, что хотите удалить категорию "{{
-            category.categoryTitle
-          }}"?
-        </h5>
-      </template>
-
-      <template v-slot:footer>
-        <a class="waves-effect waves-teal btn-flat modal-close">Нет</a>
-
-        <a class="waves-effect waves-light btn modal-close" @click="del">Да</a>
-      </template>
-    </Modal>
+    <ConfirmDeleteingCategoryModal
+      :category="category"
+      v-if="confirmingModalOpen"
+      @closed="confirmingModalOpen = false"
+    />
   </li>
 </template>
 
@@ -76,6 +68,7 @@
 <script>
 import CollapsibleCopyPasta from "@/components/CollapsibleCopyPasta";
 import AddCopyPastaModal from "@/components/modals/AddCopyPastaModal";
+import ConfirmDeleteingCategoryModal from "@/components/modals/ConfirmDeleteingCategoryModal";
 
 export default {
   props: {
@@ -89,7 +82,7 @@ export default {
       category: this.categoryProp,
       isEditing: false,
       titleBeforeEditing: "",
-      modalOpened: false,
+      confirmingModalOpen: false,
       addCopyPastaModalOpened: false,
     };
   },
@@ -131,6 +124,7 @@ export default {
   components: {
     CollapsibleCopyPasta,
     AddCopyPastaModal,
+    ConfirmDeleteingCategoryModal,
   },
 };
 </script>
