@@ -21,29 +21,56 @@
           :categoryProp="category"
         />
       </ul>
+      <div
+        class="add amber-text text-darken-4"
+        @click="addCategoryModalOpened = true"
+      >
+        <i class="material-icons">add</i> Добавить новую категорию
+      </div>
+      <AddCategoryModal
+        v-if="addCategoryModalOpened"
+        @closed="addCategoryModalOpened = false"
+      />
     </main>
   </div>
 </template>
 
-<style scoped>
-  main {
-    margin-top: 4vh;
+<style lang="less" scoped>
+main {
+  margin-top: 4vh;
+}
+
+.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  line-height: 1em;
+  text-align: center;
+  cursor: pointer;
+
+  i {
+    font-size: 1.4em;
   }
+}
 </style>
 
 <script>
 import CollapsibleCategory from "@/components/CollapsibleCategory";
+import AddCategoryModal from "@/components/modals/AddCategoryModal";
 
 export default {
   data: () => ({
-    collapsibles: []
+    collapsibles: [],
+    addCategoryModalOpened: false,
   }),
   name: "App",
   computed: {
     categories() {
       return this.$store.getters.categories;
-    }
+    },
   },
+  methods: {},
   mounted() {
     setTimeout(() => {
       const elems = document.querySelectorAll(".collapsible");
@@ -52,17 +79,17 @@ export default {
       const elemsExp = document.querySelectorAll(".collapsible.expandable");
       this.collapsibles.push(
         ...window.M.Collapsible.init(elemsExp, {
-          accordion: false
+          accordion: false,
         })
       );
     }, 0);
   },
-  destroyed() {
-    this.collapsibles.forEach(instance => instance.destroy());
+  beforeUnmounted() {
+    this.collapsibles.forEach((instance) => instance.destroy());
   },
   components: {
-    CollapsibleCategory
+    CollapsibleCategory,
+    AddCategoryModal,
   },
-
 };
 </script>

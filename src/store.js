@@ -1,9 +1,7 @@
+import { createStore } from "vuex";
 import Vue from "vue";
-import Vuex from "vuex";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+const store = createStore({
   state: {
     categories: [
       {
@@ -13,19 +11,19 @@ export default new Vuex.Store({
           {
             copypastaId: 1,
             copypastaTitle: "CopyCopy 1.1",
-            copypastaText: "CopyCopy text 1.1"
+            copypastaText: "CopyCopy text 1.1",
           },
           {
             copypastaId: 2,
             copypastaTitle: "CopyCopy 1.2",
-            copypastaText: "CopyCopy text 1.2"
+            copypastaText: "CopyCopy text 1.2",
           },
           {
             copypastaId: 3,
             copypastaTitle: "CopyCopy 1.3",
-            copypastaText: "CopyCopy text 1.3"
-          }
-        ]
+            copypastaText: "CopyCopy text 1.3",
+          },
+        ],
       },
       {
         categoryTitle: "Category 2",
@@ -34,19 +32,19 @@ export default new Vuex.Store({
           {
             copypastaId: 4,
             copypastaTitle: "Copy 2.1",
-            copypastaText: "Copy text 2.1"
+            copypastaText: "Copy text 2.1",
           },
           {
             copypastaId: 5,
             copypastaTitle: "Copy 2.2",
-            copypastaText: "Copy text 2.2"
+            copypastaText: "Copy text 2.2",
           },
           {
             copypastaId: 6,
             copypastaTitle: "Copy 2.3",
-            copypastaText: "Copy text 2.3"
-          }
-        ]
+            copypastaText: "Copy text 2.3",
+          },
+        ],
       },
       {
         categoryTitle: "Category 3",
@@ -55,21 +53,21 @@ export default new Vuex.Store({
           {
             copypastaId: 7,
             copypastaTitle: "Copy 3.1",
-            copypastaText: "Copy text 3.1"
+            copypastaText: "Copy text 3.1",
           },
           {
             copypastaId: 8,
             copypastaTitle: "Copy 3.2",
-            copypastaText: "Copy text 3.2"
+            copypastaText: "Copy text 3.2",
           },
           {
             copypastaId: 9,
             copypastaTitle: "Copy 3.3",
-            copypastaText: "Copy text 3.3"
-          }
-        ]
-      }
-    ]
+            copypastaText: "Copy text 3.3",
+          },
+        ],
+      },
+    ],
   },
   mutations: {
     updateCategory(state, { categoryId, categoryTitle }) {
@@ -92,12 +90,12 @@ export default new Vuex.Store({
     },
     deleteCategory(state, categoryId) {
       state.categories = state.categories.filter(
-        category => category.categoryId != categoryId
+        (category) => category.categoryId != categoryId
       );
     },
     deleteCopyPasta(state, copypastaId) {
       for (let category of state.categories) {
-        category.copypastas = category.copypastas.filter(copypasta => {
+        category.copypastas = category.copypastas.filter((copypasta) => {
           return copypasta.copypastaId != copypastaId;
         });
       }
@@ -111,7 +109,7 @@ export default new Vuex.Store({
           category.copypastas.push({
             copypastaId,
             copypastaTitle,
-            copypastaText
+            copypastaText,
           });
           break;
         }
@@ -120,9 +118,9 @@ export default new Vuex.Store({
     addCategory(state, { categoryId, categoryTitle }) {
       state.categories.push({
         categoryId,
-        categoryTitle
+        categoryTitle,
       });
-    }
+    },
   },
   actions: {
     async updateCategory(state, { categoryId, categoryTitle }) {
@@ -137,7 +135,7 @@ export default new Vuex.Store({
       state.commit("updateCopyPasta", {
         copypastaId,
         copypastaTitle,
-        copypastaText
+        copypastaText,
       });
     },
     async deleteCategory(state, categoryId) {
@@ -152,7 +150,7 @@ export default new Vuex.Store({
       //TODO connection with the server
       state.commit("addCategory", {
         categoryId: /*have to be got from server*/ 10,
-        categoryTitle
+        categoryTitle,
       });
     },
     async addCopyPasta(state, { categoryId, copypastaTitle, copypastaText }) {
@@ -161,11 +159,13 @@ export default new Vuex.Store({
         copypastaId: /*have to be got from server*/ 10,
         copypastaTitle,
         copypastaText,
-        categoryId
+        categoryId,
       });
-    }
+    },
   },
   getters: {
-    categories: state => state.categories
-  }
+    categories: (state) => state.categories,
+  },
 });
+
+export default store;

@@ -1,13 +1,16 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
+import Modal from "./components/Modal";
 import Loader from "./components/Loader";
 import store from "./store";
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-Vue.component("Loader", Loader);
+app.config.productionTip = false;
 
-new Vue({
-  render: h => h(App),
-  store
-}).$mount("#app");
+app.use(store);
+
+app.component("Loader", Loader);
+app.component("Modal", Modal);
+
+app.mount("#app");

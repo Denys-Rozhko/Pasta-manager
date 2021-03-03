@@ -36,8 +36,8 @@ export default {
   props: {
     copypasta: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
       textBeforeEditing: this.text,
       titleBeforeEditing: this.title,
       isEditing: false,
-      isCollapsibleOpen: false
+      isCollapsibleOpen: false,
     };
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
           await this.$store.dispatch("updateCopyPasta", {
             copypastaId: this.copypastaId,
             copypastaTitle: this.title,
-            copypastaText: this.text
+            copypastaText: this.text,
           });
           this.isEditing = false;
           window.M.toast({ html: "Изменения успешно сохранены" });
@@ -96,7 +96,7 @@ export default {
       } catch (e) {
         window.M.toast({ html: "Не удалось связаться с сервером" });
       }
-    }
-  }
+    },
+  },
 };
 </script>
